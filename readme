@@ -1,26 +1,25 @@
-This folder contains MOM6 configuration files,
-i.e. MOM_parameter_doc.all, for all the simulations 
-used in the paper Kong & Jansen (2020).
+### What this folder is for
 
-The files differ by their suffixes. Each suffix has 3 components:
-the topography/sponge layer setup, the eddy parameterizations setup,
-and the peak wind stress setup. The way they are named are,
+This folder contains MOM6 configuration files (MOM_parameter_doc.all) for the simulations used in the paper by Kong & Jansen (2020).
 
-Topography/sponge setup:
+### What files are what
+Each file provides specific MOM6 parameters for each simulation that's used in the paper. The suffixes of filenames briefly denote how each simulation is configured. Each suffix has 3 components: the topography & sponge layer setup, the eddy parameterization, and the peak wind stress. Below are how each component is named.
 
-1) cn1 refers to the setups with full topography and no sponge layer;
-2) cn3 refers to the setups with flat bottom and no sponge layer;
-3) cn6 refers to the setups with full topography and sponge layer;
-4) cn9 refers to the setups with flat bottom and sponge layer.
+#### For the topography/sponge setup:
 
-Eddy parameterizations setup:
+- cn1 refers to the setups with full topography and no sponge layer;
+- cn3 refers to the setups with flat bottom and no sponge layer;
+- cn6 refers to the setups with full topography and sponge layer;
+- cn9 refers to the setups with flat bottom and sponge layer.
 
-1) p1 refers to 0.1 deg simulations (i.e. eddy-resolving);
-2) G7/G6/.../G1/G0 refers to \kappa_GM = 700/600/.../100/0 m^2/s;
-3) GVp015 refers to the Visbeck parameterization;
-4) GoMap12 refers to the (original) MEKE parameterization;
-5) GnMap12 refers to the topographic MEKE parameterization. 
+#### For the eddy parameterizations:
 
-Peak wind stress setup:
+- p1 refers to the 0.1 degree simulations (i.e. eddy-resolving);
+- G7/G6/.../G1/G0 refers to \kappa_GM = 700/600/.../100/0 m^2/s eddy parameterizations;
+- GVp015 refers to the Visbeck parameterization;
+- GoMap12 refers to the (original) MEKE parameterization;
+- GnMap12 refers to the topographic MEKE parameterization. 
+
+#### For the peak wind stress:
 
 tp0/05/1/2/3 refers to peak wind stress \tau_0 = 0/0.05/0.1/0.2/0.3 Pa
