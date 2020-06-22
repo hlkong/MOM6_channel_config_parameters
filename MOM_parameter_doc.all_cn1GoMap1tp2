@@ -215,6 +215,7 @@ TOPO_CONFIG = "channel1"        !
                                 !     Neverland - use the Neverland test case topography.
                                 !     shoebox2 - use the shoebox2 test case topography.
                                 !     shoebox3 - use the shoebox3 test case topography.
+                                !     shoebox4 - use the shoebox4 test case topography.
                                 !     channel1 - use the channel1 test case topography.
                                 !     channel2 - use the channel2 test case topography.
                                 !     channel6 - use the channel6 test case topography.
@@ -458,16 +459,16 @@ MEKE_FIXED_MIXING_LENGTH = 0.0  !   [m] default = 0.0
 MEKE_ALPHA_DEFORM = 0.0         !   [nondim] default = 0.0
                                 ! If positive, is a coefficient weighting the deformation scale
                                 ! in the expression for mixing length used in MEKE-derived diffusiviity.
-MEKE_ALPHA_RHINES = 0.12        !   [nondim] default = 0.05
+MEKE_ALPHA_RHINES = 0.1         !   [nondim] default = 0.05
                                 ! If positive, is a coefficient weighting the Rhines scale
                                 ! in the expression for mixing length used in MEKE-derived diffusiviity.
-MEKE_ALPHA_EADY = 0.12          !   [nondim] default = 0.05
+MEKE_ALPHA_EADY = 0.1           !   [nondim] default = 0.05
                                 ! If positive, is a coefficient weighting the Eady length scale
                                 ! in the expression for mixing length used in MEKE-derived diffusiviity.
 MEKE_ALPHA_FRICT = 0.0          !   [nondim] default = 0.0
                                 ! If positive, is a coefficient weighting the frictional arrest scale
                                 ! in the expression for mixing length used in MEKE-derived diffusiviity.
-MEKE_ALPHA_GRID = 0.12          !   [nondim] default = 0.0
+MEKE_ALPHA_GRID = 0.1           !   [nondim] default = 0.0
                                 ! If positive, is a coefficient weighting the grid-spacing as a scale
                                 ! in the expression for mixing length used in MEKE-derived diffusiviity.
 MEKE_COLD_START = False         !   [Boolean] default = False
@@ -1375,7 +1376,7 @@ CALCULATE_APE = True            !   [Boolean] default = True
 WRITE_STOCKS = True             !   [Boolean] default = True
                                 ! If true, write the integrated tracer amounts to stdout
                                 ! when the energy files are written.
-MAXTRUNC = 10000                !   [truncations save_interval-1] default = 0
+MAXTRUNC = 10                   !   [truncations save_interval-1] default = 0
                                 ! The run will be stopped, and the day set to a very
                                 ! large value if the velocity is truncated more than
                                 ! MAXTRUNC times between energy saves.  Set MAXTRUNC to 0
@@ -1451,11 +1452,11 @@ LA_DEPTH_RATIO = 0.04           !   [nondim] default = 0.04
                                 !  Lanmguir number calculation, where La = sqrt(ust/Stokes).
 
 ! === module MOM_main (MOM_driver) ===
-DT_FORCING = 1.08E+04           !   [s] default = 5400.0
+DT_FORCING = 5400.0             !   [s] default = 5400.0
                                 ! The time step for changing forcing, coupling with other
                                 ! components, or potentially writing certain diagnostics.
                                 ! The default value is given by DT.
-DAYMAX = 2.922E+05              !   [days]
+DAYMAX = 5.47875E+05            !   [days]
                                 ! The final time of the whole simulation, in units of
                                 ! TIMEUNIT seconds.  This also sets the potential end
                                 ! time of the present run segment if the end time is

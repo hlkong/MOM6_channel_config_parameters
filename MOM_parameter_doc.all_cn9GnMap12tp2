@@ -271,13 +271,13 @@ ROTATION = "2omegasinlat"       ! default = "2omegasinlat"
                                 !     USER - call a user modified routine.
 OMEGA = 7.2921E-05              !   [s-1] default = 7.2921E-05
                                 ! The rotation rate of the earth.
+PARALLEL_RESTARTFILES = False   !   [Boolean] default = False
+                                ! If true, each processor writes its own restart file,
+                                ! otherwise a single restart file is generated
 
 ! === module MOM_tracer_registry ===
 
 ! === module MOM_restart ===
-PARALLEL_RESTARTFILES = False   !   [Boolean] default = False
-                                ! If true, each processor writes its own restart file,
-                                ! otherwise a single restart file is generated
 RESTARTFILE = "MOM.res"         ! default = "MOM.res"
                                 ! The name-root of the restart file.
 LARGE_FILE_SUPPORT = True       !   [Boolean] default = True
@@ -349,6 +349,68 @@ COORD_VAR = "Layer"             ! default = "Layer"
 ! Parameters providing information about the lateral grid.
 
 ! === module MOM_state_initialization ===
+INIT_LAYERS_FROM_Z_FILE = False !   [Boolean] default = False
+                                ! If true, intialize the layer thicknesses, temperatures,
+                                ! and salnities from a Z-space file on a latitude-
+                                ! longitude grid.
+THICKNESS_CONFIG = "file"       !
+                                ! A string that determines how the initial layer
+                                ! thicknesses are specified for a new run:
+                                !     file - read interface heights from the file specified
+                                !     thickness_file - read thicknesses from the file specified
+                                !       by (THICKNESS_FILE).
+                                !     coord - determined by ALE coordinate.
+                                !     uniform - uniform thickness layers evenly distributed
+                                !       between the surface and MAXIMUM_DEPTH.
+                                !     list - read a list of positive interface depths.
+                                !     DOME - use a slope and channel configuration for the
+                                !       DOME sill-overflow test case.
+                                !     ISOMIP - use a configuration for the
+                                !       ISOMIP test case.
+                                !     benchmark - use the benchmark test case thicknesses.
+                                !     Neverland - use the Neverland test case thicknesses.
+                                !     shoebox2 - use the shoebox2 test case thicknesses.
+                                !     channel6 - use the channel6 test case thicknesses.
+                                !     search - search a density profile for the interface
+                                !       densities. This is not yet implemented.
+                                !     circle_obcs - the circle_obcs test case is used.
+                                !     DOME2D - 2D version of DOME initialization.
+                                !     adjustment2d - 2D lock exchange thickness ICs.
+                                !     sloshing - sloshing gravity thickness ICs.
+                                !     seamount - no motion test with seamount ICs.
+                                !     dumbbell - sloshing channel ICs.
+                                !     soliton - Equatorial Rossby soliton.
+                                !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     USER - call a user modified routine.
+THICKNESS_FILE = "etacn9GnMap12tp2.nc" !
+                                ! The name of the thickness file.
+ADJUST_THICKNESS = True         !   [Boolean] default = False
+                                ! If true, all mass below the bottom removed if the
+                                ! topography is shallower than the thickness input file
+                                ! would indicate.
+VELOCITY_CONFIG = "zero"        ! default = "zero"
+                                ! A string that determines how the initial velocities
+                                ! are specified for a new run:
+                                !     file - read velocities from the file specified
+                                !       by (VELOCITY_FILE).
+                                !     zero - the fluid is initially at rest.
+                                !     uniform - the flow is uniform (determined by
+                                !       parameters INITIAL_U_CONST and INITIAL_V_CONST).
+                                !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     soliton - Equatorial Rossby soliton.
+                                !     USER - call a user modified routine.
+CONVERT_THICKNESS_UNITS = False !   [Boolean] default = False
+                                ! If true,  convert the thickness initial conditions from
+                                ! units of m to kg m-2 or vice versa, depending on whether
+                                ! BOUSSINESQ is defined. This does not apply if a restart
+                                ! file is read.
+DEPRESS_INITIAL_SURFACE = False !   [Boolean] default = False
+                                ! If true,  depress the initial surface to avoid huge
+                                ! tsunamis when a large surface pressure is applied.
+TRIM_IC_FOR_P_SURF = False      !   [Boolean] default = False
+                                ! If true, cuts way the top of the column for initial conditions
+                                ! at the depth where the hydrostatic presure matches the imposed
+                                ! surface pressure which is read from file.
 SPONGE = True                   !   [Boolean] default = False
                                 ! If true, sponges may be applied anywhere in the domain.
                                 ! The exact location and properties of those sponges are
@@ -361,10 +423,18 @@ SPONGE_CONFIG = "channel6"      ! default = "file"
                                 !     DOME - use a slope and channel configuration for the
                                 !       DOME sill-overflow test case.
                                 !     BFB - Sponge at the southern boundary of the domain
-                                !     channel6 - Sponge at the northern boundary of the domain
-                                !     channel5 - Sponge at the northern boundary of the domain
-                                !       for buoyancy-forced basin case.
-                                !     USER - call a user modified routine.
+                                !     channel6 - Sponge at the northern boundary of the domain:
+                                !       determined by old shoebox simulation with k_GM=700,
+                                !       symmetric buoyancy and asymmetric wind across the equator.
+                                !       No artificially deepened mixed layer.
+                                !     channel5 - similar to channel6 but the stratification is
+                                !        determined by a new shoebox simulation with no topography
+                                !       in the Southern Ocean and with Visbeck parameterization.
+                                !     channel4 - similar to channel6 but the stratification is
+                                !        determined by a new shoebox simulation with TMEKE parameterization,
+                                !       asymmetric buoyancy and symmetric wind across the equator.
+                                !        It also uses an artificially deepened surface mixed layer.
+                                !      USER - call a user modified routine.
 SPONGE_RATE = 1.653439153439153E-06 !   [s-1] default = 1.157407407407407E-06
                                 ! The rate at which the zonal-mean sponges damp.
 !Total sponge columns = 60      !
@@ -500,7 +570,7 @@ MEKE_ADVECTION_FACTOR = 0.0     !   [nondim] default = 0.0
                                 ! A scale factor in front of advection of eddy energy. Zero turns advection off.
                                 ! Using unity would be normal but other values could accomodate a mismatch
                                 ! between the advecting barotropic flow and the vertical structure of MEKE.
-MEKE_TOPOGRAPHIC_BETA = 0.0     !   [nondim] default = 0.0
+MEKE_TOPOGRAPHIC_BETA = 1.0     !   [nondim] default = 0.0
                                 ! A scale factor to determine how much topographic beta is weighed in computing beta in the expression of Rhines scale. Use 1 if full topographic beta effect is considered; use 0 if it's completely ignored.
 CDRAG = 0.003                   !   [nondim] default = 0.003
                                 ! CDRAG is the drag coefficient relating the magnitude of
@@ -1004,9 +1074,9 @@ BT_USE_OLD_CORIOLIS_BRACKET_BUG = False !   [Boolean] default = False
 ! === module MOM_thickness_diffuse ===
 KHTH = 0.0                      !   [m2 s-1] default = 0.0
                                 ! The background horizontal thickness diffusivity.
-KHTH_MIN = 1.0                  !   [m2 s-1] default = 0.0
+KHTH_MIN = 0.0                  !   [m2 s-1] default = 0.0
                                 ! The minimum horizontal thickness diffusivity.
-KHTH_MAX = 5000.0               !   [m2 s-1] default = 0.0
+KHTH_MAX = 0.0                  !   [m2 s-1] default = 0.0
                                 ! The maximum horizontal thickness diffusivity.
 KHTH_MAX_CFL = 0.8              !   [nondimensional] default = 0.8
                                 ! The maximum value of the local diffusive CFL ratio that
@@ -1472,7 +1542,7 @@ DT_FORCING = 5400.0             !   [s] default = 5400.0
                                 ! The time step for changing forcing, coupling with other
                                 ! components, or potentially writing certain diagnostics.
                                 ! The default value is given by DT.
-DAYMAX = 2.00887E+05            !   [days]
+DAYMAX = 1.82625E+05            !   [days]
                                 ! The final time of the whole simulation, in units of
                                 ! TIMEUNIT seconds.  This also sets the potential end
                                 ! time of the present run segment if the end time is
