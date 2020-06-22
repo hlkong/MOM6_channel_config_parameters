@@ -17,7 +17,7 @@ Each file provides specific MOM6 parameters for each simulation that's used in t
 - p1 refers to the 0.1 degree simulations (i.e. eddy-resolving);
 - G7/G6/.../G1/G0 refers to \kappa_GM = 700/600/.../100/0 m^2/s eddy parameterizations;
 - GVp015 refers to the Visbeck parameterization;
-- GoMap12 refers to the (original) MEKE parameterization;
+- GoMap1 refers to the (original) MEKE parameterization;
 - GnMap12 refers to the topographic MEKE parameterization. 
 
 #### For the peak wind stress:
